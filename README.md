@@ -16,5 +16,5 @@ http://localhost:8088/api/tasks/status/返回的longID，查询运行状态
 ![image](https://github.com/user-attachments/assets/733afbc7-e52c-46f6-a237-9e756e31293e)
 
 # 未完成
-1.账户密码自动获取cookie，研究一个礼拜没研究出来
-2.考试逻辑:我没有题库
+### 1.账户密码自动获取cookie，研究一个礼拜没研究出来.
+### 2.考试逻辑:我没有题库.
