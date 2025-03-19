@@ -25,8 +25,6 @@ public class free1Proxy extends AbstractHttpProxy{
 
     private static final Logger logger = LoggerFactory.getLogger(free1Proxy.class);
 
-    @Autowired
-    private ProxyProperties proxyProperties;
     @Override
     public String getType() {
         return "free1";

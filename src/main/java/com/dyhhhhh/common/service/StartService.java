@@ -66,7 +66,7 @@ public class StartService {
 
     // 课程处理逻辑
     private void processCourses(List<String> courseIds) {
-        List<Course> courses = courseServiceImpl.getCourses(CourseStatus.CLOSED,true);
+        List<Course> courses = courseServiceImpl.getCourses(CourseStatus.ONGOING,true);
         Set<String> targetIds = Optional.ofNullable(courseIds)
                 .map(ids -> ids.stream().collect(Collectors.toSet()))
                 .orElse(Collections.emptySet());
