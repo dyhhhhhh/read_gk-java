@@ -5,7 +5,7 @@
 进入国开学习平台，然后随便点进去一个课，按F12，点击任意请求，复制cookie
 ![85d151d87c7a479247b47e508987f6c](https://github.com/user-attachments/assets/6000293f-53bf-4466-8794-32623d20ec88)
 # 2.启动服务
-已内置免费代理,可以自行添加代理或不适用代理，在配置文件中添加获取代理链接然后模仿 free1Proxy 和 xiongmaoProxy即可。
+已内置免费代理,可以自行添加代理或不使用代理，在配置文件中添加获取代理链接然后模仿 free1Proxy 和 xiongmaoProxy即可。
 # 3.请求服务
 请求http://localhost:8088/api/tasks/submitCookie?cookie=上面获取的cookie,添加任务到一个线程，该接口返回一个唯一的线程 long ID 可用于查询运行状态。
 ![image](https://github.com/user-attachments/assets/ba9167b9-b829-40d9-9ae3-82d8fe8b7771)
