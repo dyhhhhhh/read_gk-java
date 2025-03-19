@@ -23,7 +23,7 @@ public class CourseController {
         /**
          * 只请求课程不用代理和
          */
-        List<Course> courses = courseService.getCourses(CourseStatus.CLOSED, cookie);
+        List<Course> courses = courseService.getCourses(CourseStatus.ONGOING, cookie);
         return ResponseEntity.ok(courses);
     }
 

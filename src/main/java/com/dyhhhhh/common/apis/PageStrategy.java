@@ -33,7 +33,7 @@ public class PageStrategy implements Strategy{
         String title = activityDetails.get("title").toString();
         //检查是否观看完毕
         System.out.println("开始阅读---" + title);
-        HashMap<String, Object> stringObjectHashMap = commonApisService.activities_state(activityId, "{}");
+        HashMap<String, Object> stringObjectHashMap = commonApisService.activities_state(activityId, new HashMap<String, Object>());
 
         if (!String.valueOf(stringObjectHashMap.get("completeness")).equals("full")){
             System.out.println("阅读失败--->" + title);
