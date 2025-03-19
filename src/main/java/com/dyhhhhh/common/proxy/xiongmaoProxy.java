@@ -24,9 +24,6 @@ public class xiongmaoProxy extends AbstractHttpProxy {
 
     private static final Logger logger = LoggerFactory.getLogger(xiongmaoProxy.class);
 
-    @Autowired
-    private ProxyProperties proxyProperties;
-
     @Override
     public String getType() {
         return "xiongmao";

@@ -68,11 +68,17 @@ public class OnlineVideoStrategy implements Strategy{
 
                 //继续观看，从上次一次观看的最大时长开始往后观看
                 HashMap<String,Object> data = (HashMap<String, Object>) response.get("data");
-                List<List<Integer>> ranges = (List<List<Integer>>) data.get("ranges");
-                for (List<Integer> range : ranges) {
-                    for (Integer r : range) {
-                        readVideoBean.setEnd(Math.max(readVideoBean.getEnd(),r));
+
+                try {
+                    List<List<Integer>>  ranges = (List<List<Integer>>) data.get("ranges");
+                    for (List<Integer> range : ranges) {
+                        for (Integer r : range) {
+                            readVideoBean.setEnd(Math.max(readVideoBean.getEnd(),r));
+                        }
                     }
+                }catch (NullPointerException e){
+                    System.err.println("当前没有ranges,发送1分钟请求");
+                    readVideoBean.setEnd(readVideoBean.getEnd());
                 }
                 //递归观看完视频
                 recursion_watch_video(duration,activityId,readVideoBean.getEnd(),httpConfig,activityDetails,readVideoBean);
