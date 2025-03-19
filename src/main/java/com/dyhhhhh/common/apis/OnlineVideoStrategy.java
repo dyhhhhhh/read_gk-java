@@ -29,10 +29,12 @@ public class OnlineVideoStrategy implements Strategy{
     @Override
     public void execute(String activityId, HashMap<String, Object> activityDetails,RequestHttpConfig httpConfig) {
         ReadVideoBean readVideoBean = new ReadVideoBean();
+
+        //检查是否已经完成观看
+        HashMap<String, Object> response = commonApisService.activities_state(activityId, new HashMap<String, Object>());
+
         readVideoBean.setStart(0);
         readVideoBean.setEnd(61);
-        //检查是否已经完成观看
-        HashMap<String, Object> response = commonApisService.activities_state(activityId, readVideoBean);
         String completeness = response.get("completeness").toString();
         if ("full".equals(completeness)){
             System.out.println("跳过");
@@ -64,7 +66,7 @@ public class OnlineVideoStrategy implements Strategy{
                 Long module_id = Long.valueOf(String.valueOf(activityDetails.get("module_id")));
                 Long syllabus_id = Long.valueOf(String.valueOf(activityDetails.get("syllabus_id")));
                 //模拟点进去观看，这一次只记录观看次数+1
-                do_online_video(Long.valueOf(activityId),module_id,syllabus_id,0,0,"play",httpConfig);
+                do_online_video(Long.valueOf(activityId),module_id,syllabus_id,0,0,"view",httpConfig);
 
                 //继续观看，从上次一次观看的最大时长开始往后观看
                 HashMap<String,Object> data = (HashMap<String, Object>) response.get("data");
@@ -110,9 +112,9 @@ public class OnlineVideoStrategy implements Strategy{
                 }
                 readVideoBean.setStart(start);
                 readVideoBean.setEnd(end);
-                //发送观看时长
-                ing_param(activityDetails);
-                video_user_visits();
+                //记录
+                commonApisService.activities_state(video_activity_id,readVideoBean);
+
                 //发送正在观看视频进度
                 do_online_video(Long.valueOf(video_activity_id),
                         Long.valueOf(String.valueOf(activityDetails.get("module_id"))),
@@ -121,8 +123,10 @@ public class OnlineVideoStrategy implements Strategy{
                         end,
                         "play",
                         httpConfig);
-                //记录
-                commonApisService.activities_state(video_activity_id,readVideoBean);
+
+                //发送观看时长
+                ing_param(activityDetails);
+                video_user_visits();
                 //递归观看
                 recursion_watch_video(duration,video_activity_id,end,httpConfig,activityDetails,readVideoBean);
             }else {
@@ -154,6 +158,7 @@ public class OnlineVideoStrategy implements Strategy{
             onlineVideoBean.setAction_type(action_type);
             onlineVideoBean.setStart_at(start);
             onlineVideoBean.setEnd_at(end);
+            onlineVideoBean.setDuration(end - start);
             //发送请求
             httpConfig.post(ApiEndpoints.BASE_URL + ApiEndpoints.Video.ONLINE_VIDEOS,onlineVideoBean);
         }catch (Exception e){

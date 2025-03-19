@@ -16,7 +16,7 @@ logging:
 proxy:
   providers:
     - type: xiongmao  # 熊猫代理
-      enabled: true
+      enabled: false
       api-key: ""
       api-url: ""
     - type: free1 # 免费代理1

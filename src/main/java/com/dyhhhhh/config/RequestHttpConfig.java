@@ -1,5 +1,6 @@
 package com.dyhhhhh.config;
 
+import com.alibaba.fastjson2.JSON;
 import com.dyhhhhh.common.PersonalInformation;
 import com.dyhhhhh.common.ThreadLocalHolder;
 import com.dyhhhhh.common.proxy.ProxyManager;
@@ -27,8 +28,8 @@ public class RequestHttpConfig {
     private static final Logger logger = LoggerFactory.getLogger(RequestHttpConfig.class);
 
     // 固定延迟范围（秒）
-    private static final int MIN_DELAY = 2;
-    private static final int MAX_DELAY = 4;
+    private static final int MIN_DELAY = 4;
+    private static final int MAX_DELAY = 6;
 
     @Autowired
     public RequestHttpConfig(OkHttpClient okHttpClient,
@@ -105,7 +106,7 @@ public class RequestHttpConfig {
             applyDelayIfNeeded(url + pathParam, enableDelay);
             PersonalInformation info = ThreadLocalHolder.getPersonalInformation();
             MediaType mediaType = MediaType.parse("application/json; charset=UTF-8");
-            RequestBody requestBody = RequestBody.create(mediaType, body.toString());
+            RequestBody requestBody = RequestBody.create(mediaType, JSON.toJSONString(body));
 
             return okHttpClient.newCall(new Request.Builder()
                     .url(url + pathParam)
