@@ -1,0 +1,25 @@
+server:
+  port: 8088
+logging:
+  level:
+    com:
+      dyhhhhh:
+        config:
+          OkHttpConfig: debug
+          RequestHttpConfig: debug
+        common:
+          proxy:
+            ProxyManager: debug
+            xiongmaoProxy: debug
+            free1Proxy: debug
+# 代理配置
+proxy:
+  providers:
+    - type: xiongmao  # 熊猫代理
+      enabled: true
+      api-key: ""
+      api-url: ""
+    - type: free1 # 免费代理1
+      enabled: true
+      api-key: ""
+      api-url: "https://proxy.scdn.io/api/get_proxy.php?protocol=http&count=2"
