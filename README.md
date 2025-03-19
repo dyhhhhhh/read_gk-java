@@ -3,7 +3,7 @@
 
 # 1.获取cookie
 进入国开学习平台，然后随便点进去一个课，按12刷新，点击任意请求，复制cookie
-![81e9d2049c5bef3a7628e32a24241da](https://github.com/user-attachments/assets/deb4f52a-ddc7-4b2a-a3a0-0207f048ec8e)
+![85d151d87c7a479247b47e508987f6c](https://github.com/user-attachments/assets/6000293f-53bf-4466-8794-32623d20ec88)
 # 2.启动服务
 已内置免费代理,可以自行添加代理或不适用代理，在配置文件中添加获取代理链接然后模仿 free1Proxy 和 xiongmaoProxy即可。
 # 3.请求服务
