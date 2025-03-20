@@ -29,7 +29,7 @@ public class ForumStrategy implements Strategy {
     @Override
     public void execute(String activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig) {
         //检查是否完成
-        if (commonApisService.is_full(activityId,"{}")) {
+        if (commonApisService.is_full(activityId,new HashMap<String, Object>())) {
             return;
         }
         forum_user_visits();
