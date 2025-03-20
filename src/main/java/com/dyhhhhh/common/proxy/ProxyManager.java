@@ -25,7 +25,6 @@ public class ProxyManager {
     private final List<Proxy> proxyPool = new CopyOnWriteArrayList<>();
     private final Random random = new Random();
     private static final int TARGET_POOL_SIZE = 2;
-    private static final long REQUEST_INTERVAL_MS = 1000; // 严格1秒间隔
 
     private final OkHttpClient tempClient = new OkHttpClient();
 

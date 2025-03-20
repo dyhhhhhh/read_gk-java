@@ -28,6 +28,7 @@ public class MaterialStrategy implements Strategy{
         //循环阅读文件
         for (HashMap<String, Object> upload : uploads) {
             try {
+                //阅读每个文件需要延迟
                 Thread.sleep(5 + new Random().nextInt(5));
             }catch (InterruptedException e){
                 System.out.println(e.getMessage());

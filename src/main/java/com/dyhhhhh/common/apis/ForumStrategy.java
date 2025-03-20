@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,10 @@ public class ForumStrategy implements Strategy {
 
     @Autowired
     private CommonApisService commonApisService;
+
+    private static final String CHAR_POOL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    private static final Random random = new Random();
 
     @Override
     public void execute(String activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig) {
@@ -71,8 +76,6 @@ public class ForumStrategy implements Strategy {
         System.out.println("开始发表帖子..");
         PublishAndReplyBean publishAndReplyBean = new PublishAndReplyBean();
         try {
-            Thread.sleep(5 + new Random().nextInt(5));
-
             publishAndReplyBean.setTitle(title);
             publishAndReplyBean.setContent(content);
             publishAndReplyBean.setCategory_id(topic_category_id);
@@ -100,7 +103,8 @@ public class ForumStrategy implements Strategy {
     public boolean replies_post(String post_id, String content, RequestHttpConfig httpConfig) {
         System.out.println("开始回复帖子..");
         PublishAndReplyBean publishAndReplyBean = new PublishAndReplyBean();
-        publishAndReplyBean.setContent(content);
+        //防止帖子回复内容重复，生产随机字符串
+        publishAndReplyBean.setContent(content + generate(5));
         String response = httpConfig.post(ApiEndpoints.BASE_URL + ApiEndpoints.Forum.REPLIES.formatted(post_id), "", publishAndReplyBean);
         if (!response.isEmpty()) {
             System.out.println("回复成功");
@@ -109,6 +113,14 @@ public class ForumStrategy implements Strategy {
             System.out.println("回复失败");
             return false;
         }
+    }
+
+    public static String generate(int length) {
+        char[] text = new char[length];
+        for (int i = 0; i < length; i++) {
+            text[i] = CHAR_POOL.charAt(random.nextInt(CHAR_POOL.length()));
+        }
+        return new String(text);
     }
 
     /**

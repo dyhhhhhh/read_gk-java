@@ -29,7 +29,7 @@ public class RequestHttpConfig {
 
     // 固定延迟范围（秒）
     private static final int MIN_DELAY = 4;
-    private static final int MAX_DELAY = 8;
+    private static final int MAX_DELAY = 6;
 
     @Autowired
     public RequestHttpConfig(OkHttpClient okHttpClient,

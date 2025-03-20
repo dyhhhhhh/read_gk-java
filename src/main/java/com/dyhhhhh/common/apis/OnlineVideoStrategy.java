@@ -79,7 +79,6 @@ public class OnlineVideoStrategy implements Strategy{
                         }
                     }
                 }catch (NullPointerException e){
-                    System.err.println("当前没有ranges,发送1分钟请求");
                     readVideoBean.setEnd(readVideoBean.getEnd());
                 }
                 //递归观看完视频
