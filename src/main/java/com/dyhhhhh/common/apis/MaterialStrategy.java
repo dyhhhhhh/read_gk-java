@@ -27,13 +27,6 @@ public class MaterialStrategy implements Strategy{
         List<HashMap<String,Object>> uploads = (List<HashMap<String, Object>>) activityDetails.get("uploads");
         //循环阅读文件
         for (HashMap<String, Object> upload : uploads) {
-            try {
-                //阅读每个文件需要延迟
-                Thread.sleep(5 + new Random().nextInt(5));
-            }catch (InterruptedException e){
-                System.out.println(e.getMessage());
-            }
-
             //获取每个文件后缀
             String suffix = String.valueOf(upload.get("name")).split("\\.")[1];
             //文件id
