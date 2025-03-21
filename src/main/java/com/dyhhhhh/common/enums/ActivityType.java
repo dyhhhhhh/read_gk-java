@@ -12,7 +12,9 @@ public enum ActivityType {
     WEB_LINK("web_link"),
     HOMEWORK("homework"),
     MIX_TASK("mix_task"),
-    VOCABULARY("vocabulary");
+    VOCABULARY("vocabulary"),
+    //调查问卷
+    QUESTIONNAIRE("questionnaire");
     private final String typeName;
 
     ActivityType(String typeName) {

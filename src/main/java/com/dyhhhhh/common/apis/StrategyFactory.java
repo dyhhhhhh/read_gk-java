@@ -22,7 +22,8 @@ public class StrategyFactory {
             WebLinkStrategy webLinkStrategy,
             HomeworkStrategy homeworkStrategy,
             MixTaskStrategy mixTaskStrategy,
-            VocabularyStrategy vocabularyStrategy
+            VocabularyStrategy vocabularyStrategy,
+            QuestionnaireStrategy questionnaireStrategy
     ) {
         strategies = new EnumMap<>(ActivityType.class);
         strategies.put(ActivityType.PAGE, pageStrategy);
@@ -34,6 +35,7 @@ public class StrategyFactory {
         strategies.put(ActivityType.HOMEWORK, homeworkStrategy);
         strategies.put(ActivityType.MIX_TASK, mixTaskStrategy);
         strategies.put(ActivityType.VOCABULARY, vocabularyStrategy);
+        strategies.put(ActivityType.QUESTIONNAIRE,questionnaireStrategy);
     }
 
     /**
