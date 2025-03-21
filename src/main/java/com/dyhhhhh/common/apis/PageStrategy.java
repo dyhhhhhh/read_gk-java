@@ -22,7 +22,7 @@ public class PageStrategy implements Strategy{
     private CommonApisService commonApisService;
 
     @Override
-    public void execute(String activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig) {
+    public void execute(Long activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig) {
         //请求
         page_user_visits(activityDetails);
         //模拟点进页面发送这个请求
@@ -44,12 +44,12 @@ public class PageStrategy implements Strategy{
     /**
      * 发送page请求
      */
-    private void send_pages(String activityId,RequestHttpConfig httpConfig){
+    private void send_pages(Long activityId,RequestHttpConfig httpConfig){
         PersonalInformation personalInformation = ThreadLocalHolder.getPersonalInformation();
         CommonInfo commonInfo = ThreadLocalHolder.currentCommonInfo();
         // 组装请求参数
         Map<String, Object> param = new HashMap<>();
-        param.put("user_id", personalInformation.getUser_id());
+        param.put("user_id", Long.valueOf(personalInformation.getUser_id()));
         param.put("org_id", personalInformation.getOrg_id());
         param.put("course_id", commonInfo.getCourse_id());
         param.put("module_id", commonInfo.getModule_id());

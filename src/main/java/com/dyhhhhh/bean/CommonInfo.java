@@ -11,11 +11,11 @@ import java.util.HashMap;
 @Getter
 @Setter
 public class CommonInfo {
-    private String activity_id;
+    private Long activity_id;
     private String course_id;
     private String course_code;
     private String course_name;
-    private String module_id;
+    private Long module_id;
     private String module_name;
     private HashMap<String, Boolean> learning_activity;
     private HashMap<String, Boolean> exam_activity;

@@ -28,7 +28,7 @@ public class CommonPayloadBean {
     // 个人信息
     public PersonalInformation personalInformation;
     public String user_id;
-    public String org_id;
+    public Long org_id;
     public String user_agent;
     public boolean is_teacher;
     public boolean is_student;
@@ -40,7 +40,7 @@ public class CommonPayloadBean {
     public String dep_id;
     public String dep_name;
 
-    public CommonPayloadBean(String user_id, String org_id, String user_agent, boolean is_teacher, boolean is_student, String org_name, String org_code, String user_name, String user_no, String dep_code, String dep_id, String dep_name) {
+    public CommonPayloadBean(String user_id, Long org_id, String user_agent, boolean is_teacher, boolean is_student, String org_name, String org_code, String user_name, String user_no, String dep_code, String dep_id, String dep_name) {
         this.user_id = user_id;
         this.org_id = org_id;
         this.user_agent = user_agent;

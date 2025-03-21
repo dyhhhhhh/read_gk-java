@@ -27,7 +27,7 @@ public class MaterialStrategy implements Strategy{
     private static final ThreadLocal<HashMap<String, Object>> learning_activity_map = ThreadLocal.withInitial(HashMap::new);
 
     @Override
-    public void execute(String activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig){
+    public void execute(Long activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig){
         //找到里面的文件
         List<HashMap<String,Object>> uploads = (List<HashMap<String, Object>>) activityDetails.get("uploads");
 
@@ -64,7 +64,7 @@ public class MaterialStrategy implements Strategy{
         }
     }
 
-    private void send_materials(String activityId,RequestHttpConfig httpConfig,HashMap<String,Object> extra_param) {
+    private void send_materials(Long activityId,RequestHttpConfig httpConfig,HashMap<String,Object> extra_param) {
 
         PersonalInformation personalInformation = ThreadLocalHolder.getPersonalInformation();
         CommonInfo commonInfo = ThreadLocalHolder.currentCommonInfo();

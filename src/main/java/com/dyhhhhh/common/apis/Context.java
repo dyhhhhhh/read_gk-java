@@ -28,6 +28,6 @@ public class Context {
         Strategy strategy = strategyFactory.getStrategy(type);
         HashMap<String, Object> details = commonApisService.getActivityDetails(learningActivities.getId());
         //开始执行
-        strategy.execute(learningActivities.getId(),details,httpConfig);
+        strategy.execute(Long.valueOf(learningActivities.getId()),details,httpConfig);
     }
 }

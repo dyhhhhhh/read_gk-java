@@ -27,7 +27,7 @@ public class OnlineVideoStrategy implements Strategy{
     private static final ThreadLocal<HashMap<String, Object>> mapThreadLocal = ThreadLocal.withInitial(HashMap::new);
 
     @Override
-    public void execute(String activityId, HashMap<String, Object> activityDetails,RequestHttpConfig httpConfig) {
+    public void execute(Long activityId, HashMap<String, Object> activityDetails,RequestHttpConfig httpConfig) {
         ReadVideoBean readVideoBean = new ReadVideoBean();
 
         //检查是否已经完成观看
@@ -66,7 +66,7 @@ public class OnlineVideoStrategy implements Strategy{
                 Long module_id = Long.valueOf(String.valueOf(activityDetails.get("module_id")));
                 Long syllabus_id = Long.valueOf(String.valueOf(activityDetails.get("syllabus_id")));
                 //模拟点进去观看，这一次只记录观看次数+1
-                do_online_video(Long.valueOf(activityId),module_id,syllabus_id,0,0,"view",httpConfig);
+                do_online_video(activityId,module_id,syllabus_id,0,0,"view",httpConfig);
 
                 //继续观看，从上次一次观看的最大时长开始往后观看
                 HashMap<String,Object> data = (HashMap<String, Object>) response.get("data");
@@ -94,7 +94,7 @@ public class OnlineVideoStrategy implements Strategy{
      * @param video_activity_id
      * @param end
      */
-    public void recursion_watch_video(int duration,String video_activity_id,
+    public void recursion_watch_video(int duration,Long video_activity_id,
                                       int end,RequestHttpConfig httpConfig,
                                       HashMap<String, Object> activityDetails,
                                       ReadVideoBean readVideoBean) {
@@ -115,7 +115,7 @@ public class OnlineVideoStrategy implements Strategy{
                 commonApisService.activities_state(video_activity_id,readVideoBean);
 
                 //发送正在观看视频进度
-                do_online_video(Long.valueOf(video_activity_id),
+                do_online_video(video_activity_id,
                         Long.valueOf(String.valueOf(activityDetails.get("module_id"))),
                         Long.valueOf(activityDetails.get("syllabus_id").toString()),
                         start,

@@ -63,7 +63,7 @@ public class Processor {
         modules.forEach(module -> {
             //获取当前课程id，去获取模块
             activityParams.getModule_ids().add(module.getId());
-            commonInfo.setModule_id(module.getId());
+            commonInfo.setModule_id(Long.valueOf(module.getId()));
             commonInfo.setModule_name(module.getName());
             //执行模块处理器
             processModuleActivities(courseId, activityParams, module);

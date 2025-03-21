@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         info.setUser_id(String.valueOf(user.get("id")));
         info.setUser_name(user.get("name"));
         info.setUser_no(user.get("userNo"));
-        info.setOrg_id(String.valueOf(user.get("orgId")));
+        info.setOrg_id(Long.valueOf(String.valueOf(user.get("orgId"))));
         info.setOrg_name(user.get("orgName"));
         info.setOrg_code(user.get("orgCode"));
         info.setDep_id(dept.get("id"));

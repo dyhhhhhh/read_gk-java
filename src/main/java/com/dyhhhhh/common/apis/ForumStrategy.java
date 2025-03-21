@@ -32,7 +32,7 @@ public class ForumStrategy implements Strategy {
     private static final Random random = new Random();
 
     @Override
-    public void execute(String activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig) {
+    public void execute(Long activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig) {
         //检查是否完成
         if (commonApisService.is_full(activityId,new HashMap<String, Object>())) {
             return;
@@ -158,7 +158,7 @@ public class ForumStrategy implements Strategy {
     /**
      * 发送 forum 请求
      */
-    private void send_forums(String activityId, RequestHttpConfig httpConfig) {
+    private void send_forums(Long activityId, RequestHttpConfig httpConfig) {
         PersonalInformation personalInformation = ThreadLocalHolder.getPersonalInformation();
         CommonInfo commonInfo = ThreadLocalHolder.currentCommonInfo();
         // 组装请求参数

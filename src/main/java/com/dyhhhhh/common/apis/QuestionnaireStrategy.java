@@ -11,7 +11,7 @@ import java.util.HashMap;
 @Component
 public class QuestionnaireStrategy implements Strategy{
     @Override
-    public void execute(String activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig) {
+    public void execute(Long activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig) {
         System.out.println("跳过 调查问卷 ");
     }
 }

@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class WebLinkStrategy extends PageStrategy {
     //直接执行页面逻辑
     @Override
-    public void execute(String activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig) {
+    public void execute(Long activityId, HashMap<String, Object> activityDetails, RequestHttpConfig httpConfig) {
         super.execute(activityId, activityDetails,httpConfig);
     }
 }

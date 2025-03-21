@@ -73,7 +73,7 @@ public class CommonApisService {
      * @param data
      * @return
      */
-    public HashMap<String, Object> activities_state(String activityId, Object data) {
+    public HashMap<String, Object> activities_state(Long activityId, Object data) {
         String result = httpConfig.post(ApiEndpoints.BASE_URL + ApiEndpoints.Course.ACTIVITIES_READ.formatted(activityId), "", data);
         return (HashMap<String, Object>) JSON.parse(result);
     }
@@ -83,7 +83,7 @@ public class CommonApisService {
     /**
      * 检测活动是否已完成
      */
-    public Boolean is_full(String activityId, Object data) {
+    public Boolean is_full(Long activityId, Object data) {
         HashMap<String, Object> checked = activities_state(activityId, data);
         String completeness = checked.get("completeness").toString();
         return "full".equals(completeness);
@@ -144,12 +144,12 @@ public class CommonApisService {
     /**
      * 解析html获取master_course_id
      */
-    public String get_master_course_id(String courseId) {
+    public Long get_master_course_id(String courseId) {
         String text = httpConfig.get(ApiEndpoints.BASE_URL + ApiEndpoints.Course.FULL_SCREEN.formatted(courseId));
         Document document = Jsoup.parse(text);
         Element masterCourseId = document.select("#masterCourseId").first();
         assert masterCourseId != null;
-        return masterCourseId.val();
+        return Long.valueOf(masterCourseId.val());
     }
 
 

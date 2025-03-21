@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Data
 public class PersonalInformation {
     private String user_id;
-    private String org_id;
+    private Long org_id;
     private final boolean is_teacher = false;
     private final boolean is_student = true;
     private String org_name;
