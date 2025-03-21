@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -24,7 +25,8 @@ public class ProxyManager {
     @Getter
     private final List<Proxy> proxyPool = new CopyOnWriteArrayList<>();
     private final Random random = new Random();
-    private static final int TARGET_POOL_SIZE = 2;
+    @Value("${proxy.poolSize}")
+    private int TARGET_POOL_SIZE;
 
     private final OkHttpClient tempClient = new OkHttpClient();
 

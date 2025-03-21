@@ -8,6 +8,7 @@ import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -28,8 +29,10 @@ public class RequestHttpConfig {
     private static final Logger logger = LoggerFactory.getLogger(RequestHttpConfig.class);
 
     // 固定延迟范围（秒）
-    private static final int MIN_DELAY = 4;
-    private static final int MAX_DELAY = 6;
+    @Value("${request.delay.min_delay}")
+    private int MIN_DELAY;
+    @Value("${request.delay.max_delay}")
+    private int MAX_DELAY;
 
     @Autowired
     public RequestHttpConfig(OkHttpClient okHttpClient,

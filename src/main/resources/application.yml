@@ -22,4 +22,10 @@ proxy:
     - type: free1 # 免费代理1
       enabled: true
       api-key: ""
-      api-url: "https://proxy.scdn.io/api/get_proxy.php?protocol=http&count=2"
+      api-url: "https://proxy.scdn.io/api/get_proxy.php?protocol=http&count=5"
+  poolSize: 10 # 线程池大小
+# 请求配置
+request:
+  delay:
+    min_delay: 4
+    max_delay: 6
