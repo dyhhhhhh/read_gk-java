@@ -3,7 +3,7 @@ package com.dyhhhhh.common.service.impl;
 import com.dyhhhhh.bean.dto.AccountDTO;
 import com.dyhhhhh.bean.task.TaskStatus;
 import com.dyhhhhh.common.service.TaskService;
-import com.dyhhhhh.common.service.ThreadManagerService;
+import com.dyhhhhh.common.ThreadManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.Map;
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
-    private ThreadManagerService threadManagerService;
+    private ThreadManager threadManager;
 
     /**
      * 提交多个账号
@@ -25,7 +25,7 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public ResponseEntity<?> submitTasks(List<AccountDTO> accounts) {
-        List<Long> longs = threadManagerService.submitAccountTasks(accounts);
+        List<Long> longs = threadManager.submitAccountTasks(accounts);
         return ResponseEntity.ok(Map.of("taskIds", longs));
     }
 
@@ -38,7 +38,7 @@ public class TaskServiceImpl implements TaskService {
     public ResponseEntity<?> submitCookieTasks(String cookie) {
         ArrayList<String> cookieString = new ArrayList<>(1);
         cookieString.add(cookie);
-        List<Long> longs = threadManagerService.submitCookieTasks(cookieString);
+        List<Long> longs = threadManager.submitCookieTasks(cookieString);
         return ResponseEntity.ok(Map.of("taskIds", longs));
     }
 
@@ -50,13 +50,13 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public ResponseEntity<?> submitCookieTargetCourses(String cookie, List<String> courseIds) {
-        Long l = threadManagerService.submitSingleCookieTask(cookie, courseIds);
+        Long l = threadManager.submitSingleCookieTask(cookie, courseIds);
         return ResponseEntity.ok(Map.of("taskId", l));
     }
 
     @Override
     public ResponseEntity<TaskStatus> getTaskStatus(Long taskId) {
-        TaskStatus taskStatus = threadManagerService.getTaskStatus(taskId);
+        TaskStatus taskStatus = threadManager.getTaskStatus(taskId);
         return taskStatus != null ?
                 ResponseEntity.ok(taskStatus) :
                 ResponseEntity.notFound().build();
@@ -64,7 +64,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public ResponseEntity<List<String>> getTaskLogs(Long taskId,int maxLines) {
-        TaskStatus status = threadManagerService.getTaskStatus(taskId);
+        TaskStatus status = threadManager.getTaskStatus(taskId);
         if (status == null) {
             return ResponseEntity.notFound().build();
         }
