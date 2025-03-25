@@ -1,7 +1,6 @@
 package com.dyhhhhh.common.proxy;
 
 
-import com.dyhhhhh.config.RequestHttpConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -19,7 +18,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 @Component
-public abstract class AbstractHttpProxy implements HttpProxy{
+public abstract class AbstractHttpProxy implements HttpProxy {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractHttpProxy.class);
 
@@ -42,6 +41,7 @@ public abstract class AbstractHttpProxy implements HttpProxy{
 
     /**
      * 通用的请求代理方法，抽成父类
+     *
      * @param tempClient:用于获取请求的对象
      * @param proxyPool:公共代理池
      */
@@ -58,9 +58,9 @@ public abstract class AbstractHttpProxy implements HttpProxy{
                     if (response.isSuccessful()) {
                         //解析返回的数据，存放到代理池中
                         List<Proxy> proxies = parseResponse(response.body().string());
-                        proxies.forEach(proxy ->{
-                            if (!proxyPool.contains(proxy) && !Objects.isNull(proxy)){
-                                logger.debug("{} 新增代理:{}", getType(), RequestHttpConfig.formatProxy(proxy));
+                        proxies.forEach(proxy -> {
+                            if (!proxyPool.contains(proxy) && !Objects.isNull(proxy)) {
+                                logger.debug("{} 新增代理:{}", getType(), formatProxy(proxy));
                                 proxyPool.add(proxy);
                             }
                         });
@@ -72,4 +72,15 @@ public abstract class AbstractHttpProxy implements HttpProxy{
             }
         });
     }
+
+    //格式化解析代理
+    public static String formatProxy(Proxy proxy) {
+        if (proxy.type() == Proxy.Type.DIRECT) return "直连";
+        InetSocketAddress addr = (InetSocketAddress) proxy.address();
+        return String.format("%s://%s:%d",
+                proxy.type().name(),
+                addr.getHostString(),
+                addr.getPort());
+    }
+
 }

@@ -17,6 +17,8 @@ import java.net.Proxy;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.dyhhhhh.common.proxy.AbstractHttpProxy.formatProxy;
+
 /**
  * 发送请求
  */
@@ -174,13 +176,5 @@ public class RequestHttpConfig {
         ThreadLocalHolder.incrementRetry();
     }
 
-    //格式化解析代理
-    public static String formatProxy(Proxy proxy) {
-        if (proxy.type() == Proxy.Type.DIRECT) return "直连";
-        InetSocketAddress addr = (InetSocketAddress) proxy.address();
-        return String.format("%s://%s:%d",
-                proxy.type().name(),
-                addr.getHostString(),
-                addr.getPort());
-    }
+
 }
