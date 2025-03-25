@@ -175,7 +175,7 @@ public class RequestHttpConfig {
     }
 
     //格式化解析代理
-    private String formatProxy(Proxy proxy) {
+    public static String formatProxy(Proxy proxy) {
         if (proxy.type() == Proxy.Type.DIRECT) return "直连";
         InetSocketAddress addr = (InetSocketAddress) proxy.address();
         return String.format("%s://%s:%d",

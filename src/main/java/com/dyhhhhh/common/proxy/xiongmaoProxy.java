@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,26 +38,24 @@ public class xiongmaoProxy extends AbstractHttpProxy {
     /**
      * 解析熊猫代理JSON数据
      */
-    public void parseResponse(String json, List<Proxy> proxyPool) {
+    public List<Proxy> parseResponse(String json) {
         try {
             JSONObject jsonObject = JSON.parseObject(json);
+            ArrayList<Proxy> proxyArrayList = new ArrayList<>();
             JSONArray proxies = jsonObject.getJSONArray("obj");
             proxies.forEach(p -> {
                 try {
                     String ip = ((JSONObject) p).getString("ip");
                     int port = ((JSONObject) p).getInteger("port");
-                    Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port));
-                    if (!proxyPool.contains(proxy)) {
-                        proxyPool.add(proxy);
-                        logger.debug("{}代理新增 {}:{}", getType(),ip, port);
-                    }
+                    proxyArrayList.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port)));
                 } catch (Exception e) {
                     logger.warn("解析{}代理数据异常: {}", getType(),p);
                 }
             });
+            return proxyArrayList;
         } catch (Exception e) {
             logger.error("{}代理数据解析失败: {}", getType(),json);
         }
-
+        return null;
     }
 }

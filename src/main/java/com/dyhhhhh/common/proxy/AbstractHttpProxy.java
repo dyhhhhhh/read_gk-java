@@ -1,20 +1,28 @@
 package com.dyhhhhh.common.proxy;
 
 
+import com.dyhhhhh.config.RequestHttpConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 @Component
 public abstract class AbstractHttpProxy implements HttpProxy{
+
+    private static final Logger logger = LoggerFactory.getLogger(AbstractHttpProxy.class);
+
     @Autowired
     protected ProxyProperties proxyProperties;
 
@@ -49,7 +57,13 @@ public abstract class AbstractHttpProxy implements HttpProxy{
                     Thread.sleep(1200L);
                     if (response.isSuccessful()) {
                         //解析返回的数据，存放到代理池中
-                        parseResponse(response.body().string(), proxyPool);
+                        List<Proxy> proxies = parseResponse(response.body().string());
+                        proxies.forEach(proxy ->{
+                            if (!proxyPool.contains(proxy) && !Objects.isNull(proxy)){
+                                logger.debug("{} 新增代理:{}", getType(), RequestHttpConfig.formatProxy(proxy));
+                                proxyPool.add(proxy);
+                            }
+                        });
                     }
                 } catch (Exception e) {
                     System.err.println("代理更新失败: " + e.getMessage());

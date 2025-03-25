@@ -12,6 +12,7 @@ logging:
             ProxyManager: debug
             xiongmaoProxy: debug
             free1Proxy: debug
+            AbstractHttpProxy: debug
 # 代理配置
 proxy:
   providers:

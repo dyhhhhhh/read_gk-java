@@ -26,7 +26,6 @@ public interface HttpProxy {
     /**
      * 都必须具有解析json方法
      * @param json
-     * @param proxyPool
      */
-    void parseResponse(String json, List<Proxy> proxyPool);
+    List<Proxy> parseResponse(String json);
 }

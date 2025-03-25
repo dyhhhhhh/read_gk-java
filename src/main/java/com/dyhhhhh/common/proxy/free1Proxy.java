@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -34,16 +35,19 @@ public class free1Proxy extends AbstractHttpProxy{
     public void refreshProxyPool(OkHttpClient tempClient, List<Proxy> proxyPool) {
         super.refreshProxyPool(tempClient,proxyPool);
     }
+
+
     /**
      * 解析free1 JSON数据
      */
     @Override
-    public void parseResponse(String json, List<Proxy> proxyPool) {
+    public List<Proxy> parseResponse(String json) {
         try {
             JSONObject root = JSON.parseObject(json);
+            ArrayList<Proxy> proxyArrayList = new ArrayList<>();
             if (root.getIntValue("code") != 200) {
                 logger.warn("代理响应异常: {}", root.getString("message"));
-                return;
+                return null;
             }
             JSONArray proxies = root.getJSONObject("data").getJSONArray("proxies");
 
@@ -63,17 +67,15 @@ public class free1Proxy extends AbstractHttpProxy{
                 try {
                     String ip = parts[0];
                     int port = Integer.parseInt(parts[1]);
-                    Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port));
-                    if (!proxyPool.contains(proxy)) {
-                        proxyPool.add(proxy);
-                        logger.debug("{} 新增代理: {}:{}", getType(),ip, port);
-                    }
+                    proxyArrayList.add(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ip, port)));
                 } catch (NumberFormatException e) {
                     logger.warn("非法端口号: {}", proxyStr);
                 }
             });
+            return proxyArrayList;
         } catch (Exception e) {
             logger.error("{}代理数据解析失败: {}", getType(),json);
         }
+        return null;
     }
 }
