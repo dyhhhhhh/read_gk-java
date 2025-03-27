@@ -47,9 +47,10 @@ public abstract class AbstractHttpProxy implements HttpProxy {
      */
     @Override
     public void refreshProxyPool(OkHttpClient tempClient, List<Proxy> proxyPool) {
-        resolveApiUrl().ifPresent(new Consumer<String>() {
-            @Override
-            public void accept(String url) {
+        //模板方法修改为三次重试，增强可靠性
+        resolveApiUrl().ifPresent(url -> {
+            int retry = 3;
+            while (retry-- > 0){
                 //请求熊猫代理https
                 Request request = new Request.Builder().url(url).build();
                 try (Response response = tempClient.newCall(request).execute()) {
@@ -64,12 +65,14 @@ public abstract class AbstractHttpProxy implements HttpProxy {
                                 proxyPool.add(proxy);
                             }
                         });
+                        //成功就直接退出
+                        break;
                     }
                 } catch (Exception e) {
                     System.err.println("代理更新失败: " + e.getMessage());
-
                 }
             }
+
         });
     }
 

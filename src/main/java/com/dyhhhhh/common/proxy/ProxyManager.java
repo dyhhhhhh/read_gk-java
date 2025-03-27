@@ -64,10 +64,18 @@ public class ProxyManager {
             return current;
         }
 
+        // 强制刷新直到代理池不为空或达到最大尝试次数
+        int refreshAttempts = 3;
+        while (proxyPool.isEmpty() && refreshAttempts-- > 0) {
+            refreshProxyPool();
+        }
+
         if (proxyPool.isEmpty()) {
+            logger.warn("代理池刷新失败，尝试重新获取新代理...");
+            //最后一次
             refreshProxyPool();
             if (proxyPool.isEmpty()) { // 刷新后仍然为空
-                logger.warn("代理池刷新失败，本次请求将不使用代理");
+                logger.error("代理池刷新失败，本次请求将不使用代理");
                 return null;
             }
         }
@@ -102,18 +110,21 @@ public class ProxyManager {
             logger.warn("未发现代理配置，将不使用代理！");
             return;
         }
-
+        // 清空无效代理池并重新获取
+        proxyPool.clear();
         //循环取出ip，直至大于=代理池大小或消费完取出次数
-        int maxRetries = 3;
+        int maxRetries = 5;
         //用于模除取余
         int currentIndex = 0;
         while (proxyPool.size() < TARGET_POOL_SIZE && maxRetries-- > 0) {
             HttpProxy httpProxy = activeProxies.get(currentIndex % activeProxies.size());
             httpProxy.refreshProxyPool(tempClient,proxyPool);
             currentIndex++;
+            if (proxyPool.isEmpty()) {
+                logger.info("正在尝试第 {} 次获取代理...", (5 - maxRetries));
+            }
         }
         logger.info("代理池更新完成，当前IP数量：{}", proxyPool.size());
     }
-
 
 }

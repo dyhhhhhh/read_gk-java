@@ -145,18 +145,20 @@ public class RequestHttpConfig {
     private String executeRequest(Callable<Response> requestCallable) {
 
         try {
-            if (proxyManager.isProxyEnabled() && !proxyManager.getProxyPool().isEmpty()) {
-                Proxy proxy = proxyManager.bindProxyToThread();
+            //每次请求去强制绑定代理
+            Proxy proxy = proxyManager.bindProxyToThread();
+            if (proxy != null){
                 logger.debug("使用代理: {}", formatProxy(proxy));
             }
-
             try (Response response = requestCallable.call()) {
                 ThreadLocalHolder.resetRetry();
                 return response.body().string();
             }
         } catch (IOException e) {
+            //检查代理是否失效
             handleProxyFailure();
-            if (ThreadLocalHolder.isOverRetryLimit(3)) {
+            //修改为重试当前代理池所有请求
+            if (ThreadLocalHolder.isOverRetryLimit(proxyManager.getProxyPool().size())) {
                 throw new RuntimeException("超过最大重试次数", e);
             }
             return executeRequest(requestCallable); // 递归重试
@@ -171,7 +173,6 @@ public class RequestHttpConfig {
         if (currentProxy != null) {
             logger.warn("代理失效: {}", formatProxy(currentProxy));
             proxyManager.markProxyFailed(currentProxy);
-            ThreadLocalHolder.clearProxy();
         }
         ThreadLocalHolder.incrementRetry();
     }

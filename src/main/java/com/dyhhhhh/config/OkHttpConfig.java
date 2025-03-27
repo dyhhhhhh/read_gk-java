@@ -59,12 +59,4 @@ public class OkHttpConfig {
 
     }
 
-    private static String proxyAddress(Proxy proxy) {
-        if (proxy.address() instanceof InetSocketAddress) {
-            InetSocketAddress addr = (InetSocketAddress) proxy.address();
-            return addr.getHostString() + ":" + addr.getPort();
-        }
-        return proxy.address().toString();
-    }
-
 }
