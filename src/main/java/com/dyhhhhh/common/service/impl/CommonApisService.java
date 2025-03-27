@@ -118,7 +118,7 @@ public class CommonApisService {
         paramMap.put("course_id", commonInfo.getCourse_id());
         paramMap.put("course_name", commonInfo.getCourse_name());
         paramMap.put("enrollment_role", "student");
-        paramMap.put("master_course_id", get_master_course_id(commonInfo.getCourse_id()));
+        paramMap.put("master_course_id", commonInfo.getMaster_course_id());
         paramMap.put("mode", "normal");
         paramMap.put("module", null);
         paramMap.put("target_info", new HashMap<>());
@@ -144,12 +144,13 @@ public class CommonApisService {
     /**
      * 解析html获取master_course_id
      */
-    public Long get_master_course_id(String courseId) {
+    public void get_master_course_id(String courseId) {
+        CommonInfo commonInfo = ThreadLocalHolder.currentCommonInfo();
         String text = httpConfig.get(ApiEndpoints.BASE_URL + ApiEndpoints.Course.FULL_SCREEN.formatted(courseId));
         Document document = Jsoup.parse(text);
         Element masterCourseId = document.select("#masterCourseId").first();
         assert masterCourseId != null;
-        return Long.valueOf(masterCourseId.val());
+        commonInfo.setMaster_course_id(Long.valueOf(masterCourseId.val()));
     }
 
 

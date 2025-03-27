@@ -29,6 +29,6 @@ proxy:
 request:
   delay:
     # 最少延迟
-    min_delay: 4
+    min_delay: 3
     # 最大延迟
     max_delay: 6

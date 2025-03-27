@@ -7,6 +7,7 @@ import com.dyhhhhh.bean.course.Course;
 import com.dyhhhhh.bean.modules.CourseModules;
 import com.dyhhhhh.common.ThreadLocalHolder;
 import com.dyhhhhh.common.service.ActivitiesService;
+import com.dyhhhhh.common.service.impl.CommonApisService;
 import com.dyhhhhh.common.service.impl.CourseServiceImpl;
 import com.dyhhhhh.common.executor.ActivityExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class Processor {
     private ActivitiesService activitiesService;
     @Autowired
     private ActivityExecutor activityExecutor;
+    @Autowired
+    private CommonApisService commonApisService;
 
     public void processCourse(Course course) {
         // 设置课程上下文
@@ -54,9 +57,10 @@ public class Processor {
     private void processModules(String courseId) {
         CommonInfo commonInfo = ThreadLocalHolder.currentCommonInfo();
         List<CourseModules> modules = courseServiceImpl.getModulesForCourses(courseId);
+        //获取该课程的master_course_id
+        commonApisService.get_master_course_id(courseId);
         //获取本课程全部已完结活动
         courseServiceImpl.my_completeness(courseId);
-
         //获取模块参数
         ModuleActivitiesBean activityParams = new ModuleActivitiesBean();
 

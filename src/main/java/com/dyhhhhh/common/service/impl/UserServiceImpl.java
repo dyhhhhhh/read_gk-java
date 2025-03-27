@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
         info.setDep_code(dept.get("code"));
         //用户登录后访问首页发送该请求
         commonApisService.send_user_visits(new HashMap<>());
+
     }
 
     public String getCookie(AccountDTO accountDTO){

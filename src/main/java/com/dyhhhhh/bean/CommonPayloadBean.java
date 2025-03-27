@@ -11,7 +11,7 @@ import lombok.Data;
 public class CommonPayloadBean {
     //个人信息
     public CommonPayloadBean() {
-        personalInformation = ThreadLocalHolder.getPersonalInformation();
+       PersonalInformation personalInformation = ThreadLocalHolder.getPersonalInformation();
         this.user_id = personalInformation.getUser_id();
         this.org_id = personalInformation.getOrg_id();
         this.user_agent = personalInformation.getBrowser_user_agent()[1];
@@ -25,8 +25,7 @@ public class CommonPayloadBean {
         this.dep_id = personalInformation.getDep_id();
         this.dep_name = personalInformation.getDep_name();
     }
-    // 个人信息
-    public PersonalInformation personalInformation;
+
     public String user_id;
     public Long org_id;
     public String user_agent;
@@ -39,21 +38,5 @@ public class CommonPayloadBean {
     public String dep_code;
     public String dep_id;
     public String dep_name;
-
-    public CommonPayloadBean(String user_id, Long org_id, String user_agent, boolean is_teacher, boolean is_student, String org_name, String org_code, String user_name, String user_no, String dep_code, String dep_id, String dep_name) {
-        this.user_id = user_id;
-        this.org_id = org_id;
-        this.user_agent = user_agent;
-        this.is_teacher = is_teacher;
-        this.is_student = is_student;
-        this.org_name = org_name;
-        this.org_code = org_code;
-        this.user_name = user_name;
-        this.user_no = user_no;
-        this.dep_code = dep_code;
-        this.dep_id = dep_id;
-        this.dep_name = dep_name;
-    }
-
 
 }

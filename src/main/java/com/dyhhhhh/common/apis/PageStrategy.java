@@ -65,7 +65,7 @@ public class PageStrategy implements Strategy{
         param.put("ts", System.currentTimeMillis());
         param.put("user_agent", personalInformation.getBrowser_user_agent()[1]);
         param.put("meeting_type", "page");
-        param.put("master_course_id", commonApisService.get_master_course_id(commonInfo.getCourse_id()));
+        param.put("master_course_id", commonInfo.getMaster_course_id());
         param.put("org_name", personalInformation.getOrg_name());
         param.put("org_code", personalInformation.getOrg_code());
         param.put("user_no", personalInformation.getUser_no());

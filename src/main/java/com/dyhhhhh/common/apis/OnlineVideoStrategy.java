@@ -50,23 +50,23 @@ public class OnlineVideoStrategy implements Strategy{
         commonApisService.post_learning_activity(activityDetails.get("type").toString(),extra_param);
         //遍历所有文件
         for (HashMap<String, Object> upload : uploads) {
-            String id = upload.get("id").toString();
+            Long upload_id = Long.valueOf(upload.get("id").toString());
             //获取每个文件后缀
             String suffix = String.valueOf(upload.get("name")).split("\\.")[1];
-            extra_param.put("sub_id",id);
+            extra_param.put("sub_id", upload_id);
             extra_param.put("sub_type",suffix);
             List<HashMap<String,Object>> videos = (List<HashMap<String, Object>>) upload.get("videos");
             System.out.println("开始观看视频->" + upload.get("name"));
 
             if (!videos.isEmpty()){
                 HashMap<String, Object> video = videos.get(0);
-                int duration = (int) Double.parseDouble(video.get("duration").toString());
+                int max_duration = (int) Double.parseDouble(video.get("duration").toString());
 
                 //获取module_id
                 Long module_id = Long.valueOf(String.valueOf(activityDetails.get("module_id")));
                 Long syllabus_id = Long.valueOf(String.valueOf(activityDetails.get("syllabus_id")));
                 //模拟点进去观看，这一次只记录观看次数+1
-                do_online_video(activityId,module_id,syllabus_id,0,0,"view",httpConfig);
+                do_online_video(activityId,module_id,syllabus_id,0,0,"view",httpConfig, upload_id);
 
                 //继续观看，从上次一次观看的最大时长开始往后观看
                 HashMap<String,Object> data = (HashMap<String, Object>) response.get("data");
@@ -82,7 +82,7 @@ public class OnlineVideoStrategy implements Strategy{
                     readVideoBean.setEnd(readVideoBean.getEnd());
                 }
                 //递归观看完视频
-                recursion_watch_video(duration,activityId,readVideoBean.getEnd(),httpConfig,activityDetails,readVideoBean);
+                recursion_watch_video(max_duration,activityId,readVideoBean.getEnd(),httpConfig,activityDetails,readVideoBean, upload_id);
             }else {
                 System.out.println("未找到视频数据");
             }
@@ -94,10 +94,13 @@ public class OnlineVideoStrategy implements Strategy{
      * @param video_activity_id
      * @param end
      */
-    public void recursion_watch_video(int duration,Long video_activity_id,
-                                      int end,RequestHttpConfig httpConfig,
+    public void recursion_watch_video(int duration,
+                                      Long video_activity_id,
+                                      int end,
+                                      RequestHttpConfig httpConfig,
                                       HashMap<String, Object> activityDetails,
-                                      ReadVideoBean readVideoBean) {
+                                      ReadVideoBean readVideoBean,
+                                      Long upload_id) {
         try {
             //判断是否观看到80%
             if(end < duration * 0.8){
@@ -121,13 +124,13 @@ public class OnlineVideoStrategy implements Strategy{
                         start,
                         end,
                         "play",
-                        httpConfig);
+                        httpConfig,upload_id);
 
                 //发送观看时长
                 ing_param(activityDetails);
                 video_user_visits();
                 //递归观看
-                recursion_watch_video(duration,video_activity_id,end,httpConfig,activityDetails,readVideoBean);
+                recursion_watch_video(duration,video_activity_id,end,httpConfig,activityDetails,readVideoBean,upload_id);
             }else {
                 System.out.println("观看完毕");
             }
@@ -146,18 +149,34 @@ public class OnlineVideoStrategy implements Strategy{
      * @param action_type
      * @throws Exception
      */
-    private static void do_online_video(Long activity_id, Long module_id,
-                                Long syllabus_id, int start, int end,
-                                String action_type,RequestHttpConfig httpConfig) {
+    private static void do_online_video(Long activity_id,
+                                        Long module_id,
+                                        Long syllabus_id,
+                                        int start,
+                                        int end,
+                                        String action_type,
+                                        RequestHttpConfig httpConfig,
+                                        Long upload_id) {
+        CommonInfo commonInfo = ThreadLocalHolder.currentCommonInfo();
         try {
             OnlineVideoBean onlineVideoBean = new OnlineVideoBean();
             onlineVideoBean.setModule_id(module_id);
             onlineVideoBean.setSyllabus_id(syllabus_id);
             onlineVideoBean.setActivity_id(activity_id);
             onlineVideoBean.setAction_type(action_type);
-            onlineVideoBean.setStart_at(start);
-            onlineVideoBean.setEnd_at(end);
-            onlineVideoBean.setDuration(end - start);
+            onlineVideoBean.setCourse_code(commonInfo.getCourse_code());
+            onlineVideoBean.setCourse_id(commonInfo.getCourse_id());
+            onlineVideoBean.setCourse_name(commonInfo.getCourse_name());
+            onlineVideoBean.setIs_final(null);
+            onlineVideoBean.setIs_formative(null);
+            onlineVideoBean.setMaster_course_id(commonInfo.getMaster_course_id());
+            onlineVideoBean.setUpload_id(upload_id);
+            if (start != 0 && end != 0){
+                onlineVideoBean.setStart_at(start);
+                onlineVideoBean.setEnd_at(end);
+                onlineVideoBean.setDuration(end - start);
+            }
+
             //发送请求
             httpConfig.post(ApiEndpoints.BASE_URL + ApiEndpoints.Video.ONLINE_VIDEOS,onlineVideoBean);
         }catch (Exception e){
