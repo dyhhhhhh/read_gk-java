@@ -28,5 +28,7 @@ proxy:
 # 请求配置
 request:
   delay:
+    # 最少延迟
     min_delay: 4
+    # 最大延迟
     max_delay: 6

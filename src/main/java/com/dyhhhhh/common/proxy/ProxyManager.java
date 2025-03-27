@@ -32,7 +32,7 @@ public class ProxyManager {
 
     private final List<HttpProxy> activeProxies;
     @Getter
-    private boolean proxyEnabled = false; // 新增代理启用状态标识
+    private boolean proxyEnabled; // 新增代理启用状态标识
 
     public ProxyManager(ProxyFactory proxyFactory) {
         this.activeProxies = proxyFactory.getActiveProxies();

@@ -22,7 +22,11 @@ public class Course {
         course.id = String.valueOf(data.get("id"));
         course.name = String.valueOf(data.get("name"));
         course.course_code =  String.valueOf(data.get("course_code"));
-        course.completeness = Double.parseDouble(data.get("completeness").toString());
+        try {
+            course.completeness = Double.parseDouble(data.get("completeness").toString());
+        }catch (NullPointerException e){
+            course.completeness = 0;
+        }
         return course;
     }
 
