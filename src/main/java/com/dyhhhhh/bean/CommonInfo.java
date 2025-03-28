@@ -12,6 +12,7 @@ import java.util.HashMap;
 @Setter
 public class CommonInfo {
     private Long activity_id;
+    private String activity_title;
     private String course_id;
     private String course_code;
     private String course_name;

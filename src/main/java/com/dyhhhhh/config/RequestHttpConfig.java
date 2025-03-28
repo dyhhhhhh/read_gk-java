@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
@@ -147,7 +146,7 @@ public class RequestHttpConfig {
         try {
             //每次请求去强制绑定代理
             Proxy proxy = proxyManager.bindProxyToThread();
-            if (proxy != null){
+            if (proxy != null) {
                 logger.debug("使用代理: {}", formatProxy(proxy));
             }
             try (Response response = requestCallable.call()) {
@@ -176,6 +175,4 @@ public class RequestHttpConfig {
         }
         ThreadLocalHolder.incrementRetry();
     }
-
-
 }

@@ -12,6 +12,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -73,6 +74,7 @@ public class CommonApisService {
      * @param data
      * @return
      */
+
     public HashMap<String, Object> activities_state(Long activityId, Object data) {
         String result = httpConfig.post(ApiEndpoints.BASE_URL + ApiEndpoints.Course.ACTIVITIES_READ.formatted(activityId), "", data);
         return (HashMap<String, Object>) JSON.parse(result);
@@ -144,6 +146,7 @@ public class CommonApisService {
     /**
      * 解析html获取master_course_id
      */
+    @Async
     public void get_master_course_id(String courseId) {
         CommonInfo commonInfo = ThreadLocalHolder.currentCommonInfo();
         String text = httpConfig.get(ApiEndpoints.BASE_URL + ApiEndpoints.Course.FULL_SCREEN.formatted(courseId));

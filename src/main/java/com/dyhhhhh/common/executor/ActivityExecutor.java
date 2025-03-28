@@ -25,6 +25,7 @@ public class ActivityExecutor {
             System.out.println("当前执行活动 -> " + commonInfo.getCourse_name() +
                     "->" + commonInfo.getModule_name() +
                     "->" + activity.getTitle());
+            commonInfo.setActivity_title(activity.getTitle());
             HashMap<String, Boolean> map = commonInfo.getLearning_activity();
             //查找当前活动是否已经在完结容器中
             if (map.get(activity.getId()) != null){
