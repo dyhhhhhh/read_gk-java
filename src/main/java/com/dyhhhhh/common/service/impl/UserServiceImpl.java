@@ -59,7 +59,8 @@ public class UserServiceImpl implements UserService {
         Document document = Jsoup.parse(html);
         Element element = document.selectFirst("script:containsData(var globalData)");
         if (element == null) {
-            throw new RuntimeException("未找到包含globalData的script标签");
+            System.err.println("cookie已过期，请重新提交");
+            throw new RuntimeException("cookie已过期，请重新提交");
         }
         String scriptContent = element.html();
         int startIndex = scriptContent.indexOf("var globalData = {");

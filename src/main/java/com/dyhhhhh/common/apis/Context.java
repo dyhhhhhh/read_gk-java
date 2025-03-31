@@ -31,10 +31,11 @@ public class Context {
             HashMap<String, Object> details = commonApisService.getActivityDetails(learningActivities.getId());
             try {
                 if (!details.containsKey("type")) {
-                    Thread.sleep(30);
+
                     String message = String.valueOf(details.get("message"));
                     if ("该学习活动尚未解锁".equals(message)) {
-                        System.err.println("请手动完成答题以继续->" + commonInfo.getCourse_name() + "->" +
+                        Thread.sleep(30);
+                        System.err.println(message+",请手动完成答题以继续->" + commonInfo.getCourse_name() + "->" +
                                 commonInfo.getModule_name() + "->" + commonInfo.getActivity_title());
                     }else if ("您没有权限完成此操作".equals(message)){
                         System.err.println(message + "->" + commonInfo.getCourse_name() + "->" +

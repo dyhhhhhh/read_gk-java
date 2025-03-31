@@ -15,7 +15,6 @@ import java.net.Proxy;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 @Component
 public abstract class AbstractHttpProxy implements HttpProxy {
@@ -50,7 +49,7 @@ public abstract class AbstractHttpProxy implements HttpProxy {
         //模板方法修改为三次重试，增强可靠性
         resolveApiUrl().ifPresent(url -> {
             int retry = 3;
-            while (retry-- > 0){
+            while (retry-- > 0) {
                 //请求熊猫代理https
                 Request request = new Request.Builder().url(url).build();
                 try (Response response = tempClient.newCall(request).execute()) {
